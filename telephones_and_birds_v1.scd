@@ -5,8 +5,6 @@ telephones and birds
 only supports mono sound files
 put all sound files in a directory, update path of ~buffers
 
-to add -> random position thing
-
 */
 
 
@@ -31,7 +29,7 @@ SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0, pos = 0 |
 	var env, play;
 
 	env = EnvGen.kr( Env.asr( 0.01, amp, 0.01 ), trig, doneAction:0 );
-	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer),` loop: 1);
+	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer), loop: 1);
 	Out.ar([0,1], play * env * amp );
 }).add;
 )
