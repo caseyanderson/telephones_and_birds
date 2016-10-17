@@ -31,11 +31,11 @@ SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0 |
 	var env, play;
 
 	env = EnvGen.kr( Env.asr( 0.01, amp, 0.01 ), trig, doneAction:0 );
-	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer), loop: 1);
+	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer), trig, loop: 1);
 	Out.ar([0,1], play * env * amp );
 }).add;
 )
-
+TRand.kr(0, buffer.numFrames, otrig)
 
 ///////// MAKE ALL THE THINGS /////////
 
@@ -59,7 +59,7 @@ for( 0, len, { arg i;
 	Synth(\play, [\buffer, ~buffers[i], \amp, a[("vol"++i).asSymbol].asMap, \trig, a[("trig"++i).asSymbol].asMap]);
 
 
-	// make the gui
+	// the resmake the gui
 	// toggle on/off
 
 	b = Button(w, Rect( button_h, vertical, 50, 50))
