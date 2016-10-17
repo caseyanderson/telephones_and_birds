@@ -2,16 +2,13 @@
 
 telephones and birds
 
-todo:
-number of samples in directory controls how many synth instances
+only supports mono sound files
+put all sound files in a directory, update path of ~buffers
 
-control panel (per synth instance)
-volume
-play
-
-always loop
+to add -> random position thing
 
 */
+
 
 ///////// SETUP /////////
 
@@ -20,22 +17,27 @@ s.boot;
 
 (
 a = currentEnvironment;
-w = Window.new("telephones and birds", Rect(200,200,900,400));
+w = Window.new("telephones and birds", Rect(200,200,940,420));
 
 // make the buffers
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
 )
 
+
 ///////// SYNTH /////////
+
 (
-SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0 |
+SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0, pos = 0 |
 	var env, play;
 
 	env = EnvGen.kr( Env.asr( 0.01, amp, 0.01 ), trig, doneAction:0 );
-	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer), loop: 1);
+	play = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer), startPos: pos, loop: 1);
 	Out.ar([0,1], play * env * amp );
 }).add;
 )
+
+
+///////// MAKE ALL THE THINGS /////////
 
 (
 var len = ((~buffers.size)-1);
@@ -54,13 +56,12 @@ for( 0, len, { arg i;
 
 	//make the busses and the synths
 
-	a[("vol"++i).asSymbol] = Bus.control(s, 1).set(0.5);
+	a[("vol"++i).asSymbol] = Bus.control(s,1).set(0.5);
 	a[("trig"++i).asSymbol] = Bus.control(s,1).set(0);
-	Synth(\play, [\buffer, ~buffers[i], \amp, a[("vol"++i).asSymbol].asMap, \trig, a[("trig"++i).asSymbol].asMap]);
+	Synth(\play, [\buffer, ~buffers[i], \amp, a[("vol"++i).asSymbol].asMap, \trig, a[("trig"++i).asSymbol].asMap);
 
 
 	// make the gui
-	// toggle on/off
 
 	if( row == 0, {
 
@@ -83,12 +84,12 @@ for( 0, len, { arg i;
 
 		// this switches from top to bottom
 		if( i > 6, {
-			row == 1;
-			vertical = 210;
+			row = 1;
+			vertical = 220;
 		});
 	},{
 
-		h = Button(w, Rect( b_buttonH, vertical, 50, 50))
+		b = Button(w, Rect( b_buttonH, vertical, 50, 50))
 		.states_([
 			["OFF", Color.white, Color.black],
 			["ON", Color.white, Color.red]
@@ -104,13 +105,10 @@ for( 0, len, { arg i;
 
 		b_buttonH = b_buttonH + spacing;
 		b_sliderH = b_sliderH + spacing;
+
 	});
 });
 
 w.front;
 
 )
-
-// trouble shooting
-
-a.clear;
