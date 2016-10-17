@@ -2,21 +2,18 @@
 
 telephones and birds
 
-todo:
-number of samples in directory controls how many synth instances
+only supports mono sound files
+put all sound files in a directory, update path of ~buffers
 
-control panel (per synth instance)
-volume
-play
-
-always loop
+to add -> random position thing
 
 */
 
-///////// SETUP /////////
 
 s.options.memSize = 1048576;
 s.boot;
+
+///////// SETUP /////////
 
 (
 a = currentEnvironment;
@@ -26,7 +23,9 @@ w = Window.new("telephones and birds", Rect(200,200,1300,250));
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
 )
 
+
 ///////// SYNTH /////////
+
 (
 SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0 |
 	var env, play;
@@ -36,6 +35,9 @@ SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0 |
 	Out.ar([0,1], play * env * amp );
 }).add;
 )
+
+
+///////// MAKE ALL THE THINGS /////////
 
 (
 var len = ((~buffers.size)-1);
@@ -60,29 +62,24 @@ for( 0, len, { arg i;
 	// make the gui
 	// toggle on/off
 
-		b = Button(w, Rect( button_h, vertical, 50, 50))
-		.states_([
-			["OFF", Color.white, Color.black],
-			["ON", Color.white, Color.red]
-		])
-		.action_({ arg butt;
-			a[("trig"++i).asSymbol].set( butt.value );
-		});
+	b = Button(w, Rect( button_h, vertical, 50, 50))
+	.states_([
+		["OFF", Color.white, Color.black],
+		["ON", Color.white, Color.red]
+	])
+	.action_({ arg butt;
+		a[("trig"++i).asSymbol].set( butt.value );
+	});
 
-		sliders[i] = Slider.new(w, Rect(slider_h, vertical, 50, 200))
-		.action_({
-			a[("vol"++i).asSymbol].set(sliders[i].value);
-		});
+	sliders[i] = Slider.new(w, Rect(slider_h, vertical, 50, 200))
+	.action_({
+		a[("vol"++i).asSymbol].set(sliders[i].value);
+	});
 
-		button_h = button_h + spacing;
-		slider_h = slider_h + spacing;
+	button_h = button_h + spacing;
+	slider_h = slider_h + spacing;
 
 });
 
 w.front;
-
 )
-
-// trouble shooting
-
-a.clear;
