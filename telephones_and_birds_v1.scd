@@ -15,7 +15,7 @@ s.boot;
 
 (
 a = currentEnvironment;
-w = Window.new("telephones and birds", Rect(10,10,1300,420));
+w = Window.new("telephones and birds", Rect(10,10,1300,420), scroll: true );
 
 // make the buffers
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
