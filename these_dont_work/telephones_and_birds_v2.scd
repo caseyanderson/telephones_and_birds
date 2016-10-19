@@ -15,7 +15,7 @@ s.boot;
 
 (
 a = currentEnvironment;
-w = Window.new("telephones and birds", Rect(10,10,1300,420));
+w = Window.new("telephones and birds", Rect(10,10,1265,640));
 
 // make the buffers
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
@@ -39,10 +39,14 @@ SynthDef(\play, {| out = 0, buffer, amp = 0.0, trig = 0, pos = 0 |
 
 (
 var len = ((~buffers.size)-1);
-var t_buttonH = 10;
-var b_buttonH = 10;
-var t_sliderH = 65;
-var b_sliderH = 65;
+var buttonH1 = 10;
+var buttonH2 = 10;
+var buttonH3 = 10;
+
+var sliderH1 = 65;
+var sliderH2 = 65;
+var sliderH3 = 65;
+
 var spacing = 115;
 var vertical = 10;
 var sliders;
@@ -61,9 +65,10 @@ for( 0, len, { arg i;
 
 	// make the gui
 
-	if( row == 0, {
+	switch( row,
+		0, {
 
-		b = Button(w, Rect( t_buttonH, vertical, 50, 50))
+		b = Button(w, Rect( buttonH1, vertical, 50, 50))
 		.states_([
 			["OFF", Color.white, Color.black],
 			["ON", Color.white, Color.red]
@@ -72,38 +77,71 @@ for( 0, len, { arg i;
 			a[("trig"++i).asSymbol].set( butt.value );
 		});
 
-		sliders[i] = Slider.new(w, Rect(t_sliderH, vertical, 50, 200))
+		sliders[i] = Slider.new(w, Rect(sliderH1, vertical, 50, 200))
 		.action_({
 			a[("vol"++i).asSymbol].set(sliders[i].value);
 		});
 
-		t_buttonH = t_buttonH + spacing;
-		t_sliderH = t_sliderH + spacing;
+		buttonH1 = buttonH1 + spacing;
+		sliderH1 = sliderH1 + spacing;
+	},
 
-		// this switches from top to bottom
-		if( i > 11, {
-			row = 1;
-			vertical = 220;
+	1, {
+
+		vertical = 220;
+
+		b = Button(w, Rect( buttonH2, vertical, 50, 50))
+		.states_([
+			["OFF", Color.white, Color.black],
+			["ON", Color.white, Color.red]
+		])
+		.action_({ arg butt;
+			a[("trig"++i).asSymbol].set( butt.value );
 		});
+
+		sliders[i] = Slider.new(w, Rect(sliderH2, vertical, 50, 200))
+		.action_({
+			a[("vol"++i).asSymbol].set(sliders[i].value);
+		});
+
+		buttonH2 = buttonH2 + spacing;
+		sliderH2 = sliderH2 + spacing;
+
+	},
+
+	2, {
+
+		vertical = 430;
+
+		b = Button(w, Rect( buttonH3, vertical, 50, 50))
+		.states_([
+			["OFF", Color.white, Color.black],
+			["ON", Color.white, Color.red]
+		])
+		.action_({ arg butt;
+			a[("trig"++i).asSymbol].set( butt.value );
+		});
+
+		sliders[i] = Slider.new(w, Rect(sliderH3, vertical, 50, 200))
+		.action_({
+			a[("vol"++i).asSymbol].set(sliders[i].value);
+		});
+
+		buttonH3 = buttonH3 + spacing;
+		sliderH3 = sliderH3 + spacing;
+
+	});
+
+	// switch row number
+
+	if( i > 11, {
+		"row2".postln;
+		row = 1;
 	},{
-
-		b = Button(w, Rect( b_buttonH, vertical, 50, 50))
-		.states_([
-			["OFF", Color.white, Color.black],
-			["ON", Color.white, Color.red]
-		])
-		.action_({ arg butt;
-			a[("trig"++i).asSymbol].set( butt.value );
-		});
-
-		sliders[i] = Slider.new(w, Rect(b_sliderH, vertical, 50, 200))
-		.action_({
-			a[("vol"++i).asSymbol].set(sliders[i].value);
-		});
-
-		b_buttonH = b_buttonH + spacing;
-		b_sliderH = b_sliderH + spacing;
-
+		if( i > 22, {
+		"row3".postln;
+		row = 2;
+	});
 	});
 });
 
