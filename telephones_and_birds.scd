@@ -58,7 +58,7 @@ for( 0, len, { arg i;
 
 	//make the busses and the synths
 
-	a[("vol"++i).asSymbol] = Bus.control(s,1).set(0.5);
+	a[("vol"++i).asSymbol] = Bus.control(s,1).set(0.0);
 	a[("trig"++i).asSymbol] = Bus.control(s,1).set(0);
 	Synth(\play, [\buffer, ~buffers[i], \amp, a[("vol"++i).asSymbol].asMap, \trig, a[("trig"++i).asSymbol].asMap]);
 
