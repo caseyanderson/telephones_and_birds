@@ -19,6 +19,7 @@ a = currentEnvironment;
 w = Window.new("telephones and birds", Rect(100,0,1275,640));
 
 // make the buffers
+
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
 )
 
@@ -68,30 +69,23 @@ for( 0, len, { arg i;
 	// check for step (i), set row number (row)
 
 	if( (i >= 0) && (i <= 10), {
-		// postln( "i is " + i );
-		// "gui row 1".postln;
 		row = 0;
 	});
 
 	if( (i > 10) && (i <= 21), {
-		// postln( "i is " + i );
-		// "gui row 2".postln;
 		row = 1;
 	});
 
 	if( (i > 21) && (i <32), {
-		// postln( "i is " + i );
-		// "gui row 3".postln;
 		row = 2;
 	});
 
 
-	// switch the row, make the gui
+	// set the row, make the gui
 
 	switch( row,
 
 	0, {
-		// "we are on row1".postln;
 
 		b = Button(w, Rect( buttonH1, vertical, 50, 50))
 		.states_([
@@ -117,7 +111,6 @@ for( 0, len, { arg i;
 	},
 
 	1, {
-		// "we are on row2".postln;
 
 		vertical = 220;
 
@@ -145,8 +138,6 @@ for( 0, len, { arg i;
 	},
 
 	2, {
-
-		// "we are on row3".postln;
 
 		vertical = 430;
 
@@ -178,7 +169,3 @@ for( 0, len, { arg i;
 w.front;
 
 )
-
-// trouble shooting
-
-a.clear;
