@@ -59,7 +59,7 @@ sliders = Array.newClear(~buffers.size);
 
 for( 0, len, { arg i;
 
-	//make the busses and the synths
+	// make the busses and the synths
 
 	a[("vol"++i).asSymbol] = Bus.control(s,1).set(0.0);
 	a[("trig"++i).asSymbol] = Bus.control(s,1).set(0);
