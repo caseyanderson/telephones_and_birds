@@ -1,9 +1,10 @@
 /*
 
-telephones and birds
+telephones and birds, john cage
+sample player for southland ensemble, casey anderson
 
-only supports mono sound files
-put all sound files in a directory, update path of ~buffers
+supports mono sound files
+put all sound files in a directory, update path to directory at ~buffers
 
 */
 
@@ -15,7 +16,7 @@ s.boot;
 
 (
 a = currentEnvironment;
-w = Window.new("telephones and birds", Rect(200,200,1265,640));
+w = Window.new("telephones and birds", Rect(100,0,1275,640));
 
 // make the buffers
 ~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
@@ -54,6 +55,7 @@ var row = 0;
 
 sliders = Array.newClear(~buffers.size);
 
+
 for( 0, len, { arg i;
 
 	//make the busses and the synths
@@ -63,31 +65,33 @@ for( 0, len, { arg i;
 	Synth(\play, [\buffer, ~buffers[i], \amp, a[("vol"++i).asSymbol].asMap, \trig, a[("trig"++i).asSymbol].asMap]);
 
 
-	// changes row based on step (i)
+	// check for step (i), set row number (row)
 
 	if( (i >= 0) && (i <= 10), {
-		postln( "i is " + i );
-		"gui row 1".postln;
+		// postln( "i is " + i );
+		// "gui row 1".postln;
 		row = 0;
 	});
 
 	if( (i > 10) && (i <= 21), {
-		postln( "i is " + i );
-		"gui row 2".postln;
+		// postln( "i is " + i );
+		// "gui row 2".postln;
 		row = 1;
 	});
 
 	if( (i > 21) && (i <32), {
-		postln( "i is " + i );
-		"gui row 3".postln;
+		// postln( "i is " + i );
+		// "gui row 3".postln;
 		row = 2;
 	});
 
-	// change which row we are on
+
+	// switch the row, make the gui
 
 	switch( row,
-		0, {
-		"we are on row1".postln;
+
+	0, {
+		// "we are on row1".postln;
 
 		b = Button(w, Rect( buttonH1, vertical, 50, 50))
 		.states_([
@@ -98,6 +102,10 @@ for( 0, len, { arg i;
 			a[("trig"++i).asSymbol].set( butt.value );
 		});
 
+		h = NumberBox(w, Rect(buttonH1, vertical + 60, 50, 50));
+			h.align = \center;
+			h.value = (i + 1);
+
 		sliders[i] = Slider.new(w, Rect(sliderH1, vertical, 50, 200))
 		.action_({
 			a[("vol"++i).asSymbol].set(sliders[i].value);
@@ -107,8 +115,9 @@ for( 0, len, { arg i;
 		sliderH1 = sliderH1 + spacing;
 
 	},
+
 	1, {
-		"we are on row2".postln;
+		// "we are on row2".postln;
 
 		vertical = 220;
 
@@ -120,6 +129,10 @@ for( 0, len, { arg i;
 		.action_({ arg butt;
 			a[("trig"++i).asSymbol].set( butt.value );
 		});
+
+		h = NumberBox(w, Rect(buttonH2, vertical + 60, 50, 50));
+			h.align = \center;
+			h.value = (i + 1);
 
 		sliders[i] = Slider.new(w, Rect(sliderH2, vertical, 50, 200))
 		.action_({
@@ -133,7 +146,7 @@ for( 0, len, { arg i;
 
 	2, {
 
-		"we are on row3".postln;
+		// "we are on row3".postln;
 
 		vertical = 430;
 
@@ -145,6 +158,10 @@ for( 0, len, { arg i;
 		.action_({ arg butt;
 			a[("trig"++i).asSymbol].set( butt.value );
 		});
+
+		h = NumberBox(w, Rect(buttonH3, vertical + 60, 50, 50));
+			h.align = \center;
+			h.value = (i + 1);
 
 		sliders[i] = Slider.new(w, Rect(sliderH3, vertical, 50, 200))
 		.action_({
