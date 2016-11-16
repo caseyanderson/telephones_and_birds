@@ -20,7 +20,7 @@ w = Window.new("telephones and birds", Rect(100,0,1275,640));
 
 // make the buffers
 
-~buffers = "/Users/mdp/Desktop/telephones_birds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
+~buffers = "/Users/mdp/Desktop/bird_sounds/*".pathMatch.collect{ | file | Buffer.read( s, file ); };
 )
 
 
